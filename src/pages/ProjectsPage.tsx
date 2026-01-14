@@ -3,13 +3,17 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { projects, employees, formatCurrency, formatDate } from '@/lib/mockData';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Search, Plus, Calendar, DollarSign, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Progress } from '@/components/ui/progress';
+import { ProjectForm } from '@/components/forms/ProjectForm';
+import { toast } from 'sonner';
 
 export const ProjectsPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   const filteredProjects = projects.filter((project) => {
     const matchesSearch =
@@ -85,11 +89,27 @@ export const ProjectsPage: React.FC = () => {
             ))}
           </div>
         </div>
-        <Button className="gap-2">
+        <Button className="gap-2" onClick={() => setIsFormOpen(true)}>
           <Plus className="h-4 w-4" />
           New Project
         </Button>
       </div>
+
+      <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
+        <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Create New Project</DialogTitle>
+            <DialogDescription>Set up a new project with client, budget, timeline, and team assignment.</DialogDescription>
+          </DialogHeader>
+          <ProjectForm 
+            onSubmit={(data) => {
+              toast.success('Project created successfully!');
+              setIsFormOpen(false);
+            }}
+            onCancel={() => setIsFormOpen(false)}
+          />
+        </DialogContent>
+      </Dialog>
 
       {/* Projects Grid */}
       <div className="grid gap-6 lg:grid-cols-2">

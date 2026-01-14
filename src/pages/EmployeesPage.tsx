@@ -3,11 +3,15 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { employees, clients, commissions, formatCurrency, formatDate } from '@/lib/mockData';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Search, Plus, User, Mail, Briefcase, Percent } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { EmployeeForm } from '@/components/forms/EmployeeForm';
+import { toast } from 'sonner';
 
 export const EmployeesPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   const filteredEmployees = employees.filter(
     (employee) =>
@@ -50,11 +54,27 @@ export const EmployeesPage: React.FC = () => {
             className="pl-9"
           />
         </div>
-        <Button className="gap-2">
+        <Button className="gap-2" onClick={() => setIsFormOpen(true)}>
           <Plus className="h-4 w-4" />
           Add Employee
         </Button>
       </div>
+
+      <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Add New Employee</DialogTitle>
+            <DialogDescription>Enter employee details including role and commission rate.</DialogDescription>
+          </DialogHeader>
+          <EmployeeForm 
+            onSubmit={(data) => {
+              toast.success('Employee added successfully!');
+              setIsFormOpen(false);
+            }}
+            onCancel={() => setIsFormOpen(false)}
+          />
+        </DialogContent>
+      </Dialog>
 
       {/* Employees Grid */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

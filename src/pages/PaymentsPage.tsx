@@ -3,10 +3,14 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { payments, formatCurrency, formatDate } from '@/lib/mockData';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Search, Plus, CheckCircle2, Clock, AlertCircle, Receipt } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { PaymentForm } from '@/components/forms/PaymentForm';
+import { toast } from 'sonner';
 
 export const PaymentsPage: React.FC = () => {
+  const [isFormOpen, setIsFormOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
 
@@ -117,11 +121,27 @@ export const PaymentsPage: React.FC = () => {
             ))}
           </div>
         </div>
-        <Button className="gap-2">
+        <Button className="gap-2" onClick={() => setIsFormOpen(true)}>
           <Plus className="h-4 w-4" />
           Record Payment
         </Button>
       </div>
+
+      <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Record Payment</DialogTitle>
+            <DialogDescription>Record a payment received from a client. Commission will be calculated automatically.</DialogDescription>
+          </DialogHeader>
+          <PaymentForm 
+            onSubmit={(data) => {
+              toast.success('Payment recorded successfully!');
+              setIsFormOpen(false);
+            }}
+            onCancel={() => setIsFormOpen(false)}
+          />
+        </DialogContent>
+      </Dialog>
 
       {/* Payments Table */}
       <div className="rounded-xl border border-border bg-card shadow-sm">
