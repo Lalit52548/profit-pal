@@ -3,11 +3,15 @@ import { DashboardLayout } from '@/components/layout/DashboardLayout';
 import { clients, formatCurrency, formatDate } from '@/lib/mockData';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Search, Plus, Building2, Mail, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ClientForm } from '@/components/forms/ClientForm';
+import { toast } from 'sonner';
 
 export const ClientsPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   const filteredClients = clients.filter(
     (client) =>
@@ -42,11 +46,28 @@ export const ClientsPage: React.FC = () => {
             className="pl-9"
           />
         </div>
-        <Button className="gap-2">
+        <Button className="gap-2" onClick={() => setIsFormOpen(true)}>
           <Plus className="h-4 w-4" />
           Add Client
         </Button>
       </div>
+
+      {/* Add Client Dialog */}
+      <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Add New Client</DialogTitle>
+            <DialogDescription>Enter the client details below. The client owner will earn commissions from all payments.</DialogDescription>
+          </DialogHeader>
+          <ClientForm 
+            onSubmit={(data) => {
+              toast.success('Client added successfully!');
+              setIsFormOpen(false);
+            }}
+            onCancel={() => setIsFormOpen(false)}
+          />
+        </DialogContent>
+      </Dialog>
 
       {/* Clients Grid */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
