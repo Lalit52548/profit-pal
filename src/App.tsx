@@ -11,6 +11,12 @@ import { EmployeesPage } from "./pages/EmployeesPage";
 import { PaymentsPage } from "./pages/PaymentsPage";
 import { CommissionsPage } from "./pages/CommissionsPage";
 import { ReportsPage } from "./pages/ReportsPage";
+// HR Module Pages
+import { CEODashboard } from "./pages/CEODashboard";
+import { RecruitmentPlanPage } from "./pages/RecruitmentPlanPage";
+import { TargetVsActualPage } from "./pages/TargetVsActualPage";
+import { SalaryCostPage } from "./pages/SalaryCostPage";
+import { PreviousEmployeesPage } from "./pages/PreviousEmployeesPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +36,12 @@ const App = () => (
             <Route path="/payments" element={<PaymentsPage />} />
             <Route path="/commissions" element={<CommissionsPage />} />
             <Route path="/reports" element={<ReportsPage />} />
+            {/* HR Module Routes */}
+            <Route path="/ceo-dashboard" element={<CEODashboard />} />
+            <Route path="/recruitment-plan" element={<RecruitmentPlanPage />} />
+            <Route path="/target-vs-actual" element={<TargetVsActualPage />} />
+            <Route path="/salary-cost" element={<SalaryCostPage />} />
+            <Route path="/previous-employees" element={<PreviousEmployeesPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

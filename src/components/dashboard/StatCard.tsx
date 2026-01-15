@@ -9,6 +9,12 @@ interface StatCardProps {
     value: number;
     isPositive: boolean;
   };
+  // New props for HR module compatibility
+  trend?: {
+    value: string;
+    positive: boolean;
+  };
+  description?: string;
   icon: LucideIcon;
   iconColor?: string;
   className?: string;
@@ -18,6 +24,8 @@ export const StatCard: React.FC<StatCardProps> = ({
   title,
   value,
   change,
+  trend,
+  description,
   icon: Icon,
   iconColor = 'text-primary',
   className,
@@ -29,6 +37,7 @@ export const StatCard: React.FC<StatCardProps> = ({
         <div className="space-y-2">
           <p className="text-sm font-medium text-muted-foreground">{title}</p>
           <p className="text-2xl font-bold text-foreground">{value}</p>
+          {/* Original change prop */}
           {change && (
             <div className="flex items-center gap-1">
               <span
@@ -41,6 +50,23 @@ export const StatCard: React.FC<StatCardProps> = ({
               </span>
               <span className="text-xs text-muted-foreground">vs last month</span>
             </div>
+          )}
+          {/* New trend prop for HR module */}
+          {trend && (
+            <div className="flex items-center gap-1">
+              <span
+                className={cn(
+                  'text-sm font-medium',
+                  trend.positive ? 'text-green-600' : 'text-destructive'
+                )}
+              >
+                {trend.value}
+              </span>
+            </div>
+          )}
+          {/* New description prop */}
+          {description && (
+            <p className="text-xs text-muted-foreground">{description}</p>
           )}
         </div>
         <div className={cn('flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10', iconColor)}>
